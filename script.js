@@ -1,394 +1,401 @@
-const scenes = {
-  loss: {
-    title: "我刚亏了",
-    label: "亏损金额",
-    kicker: "亏损现实审判",
-    heading: "你亏掉的不是 U，是现实生活被扣款。",
-    moneyLabel: "亏损折合人民币",
-    action: "生成现实审判",
-    heroHint: "别急着点下一单",
-    verb: "亏损",
-    quote: "你亏掉的不是数字，是早餐、工资、房租和本来可以留住的退路。",
-    adviceTitle: "止血动作",
-    adviceMain: "今天停止交易。",
-    adviceSub: "如果你还想立刻下一单，你现在不是在交易，是在用钱止痛。",
-    redlineMain: "把交易软件从首页移走。",
-    redlineSub: "先让手指够不到它，再谈理性。真正失控的人，第一反应都是再来一把。",
+const exchanges = [
+  { name: "Binance", status: "可用", latency: "48ms", api: "模拟已连接" },
+  { name: "OKX", status: "可用", latency: "62ms", api: "模拟已连接" },
+  { name: "Bybit", status: "可用", latency: "55ms", api: "模拟已连接" },
+  { name: "Bitget", status: "可用", latency: "71ms", api: "待配置" },
+  { name: "Gate", status: "可用", latency: "88ms", api: "待配置" },
+];
+
+const traders = [
+  {
+    id: "t1",
+    name: "Alpha 短线",
+    tag: "BTC/ETH 高频",
+    exchange: "Binance",
+    roi: 68.4,
+    drawdown: 9.8,
+    win: 63,
+    followers: 1286,
+    risk: "中",
+    curve: [28, 34, 31, 42, 48, 45, 52, 58, 56, 64, 72, 78],
   },
-  profit: {
-    title: "我刚赚了",
-    label: "盈利金额",
-    kicker: "盈利现实审判",
-    heading: "盈利如果不离场，很快会变回筹码。",
-    moneyLabel: "盈利折合人民币",
-    action: "生成落袋账单",
-    heroHint: "把利润带回现实",
-    verb: "盈利",
-    quote: "盈利留在交易所，只是下一次亏损的原材料；提现到生活里，才叫赚钱。",
-    adviceTitle: "落袋动作",
-    adviceMain: "立刻提取 30%。",
-    adviceSub: "用一部分盈利还债、储蓄、买必需品或给家人，别让它只变成更大的仓位。",
-    redlineMain: "先提现，再庆祝。",
-    redlineSub: "如果你赚了还想马上加倍，说明你真正上瘾的不是赚钱，是下注的刺激。",
+  {
+    id: "t2",
+    name: "稳健趋势",
+    tag: "低频趋势",
+    exchange: "OKX",
+    roi: 41.2,
+    drawdown: 5.1,
+    win: 59,
+    followers: 864,
+    risk: "低",
+    curve: [22, 24, 26, 31, 33, 35, 37, 40, 42, 45, 47, 50],
   },
-  entry: {
-    title: "我准备开仓",
-    label: "计划投入",
-    kicker: "开仓现实审判",
-    heading: "按下开仓前，先看见它在现实里的尸检报告。",
-    moneyLabel: "计划投入折合人民币",
-    action: "确认代价",
-    heroHint: "交易前先看现实",
-    verb: "计划投入",
-    quote: "你可以冒险，但别假装这只是屏幕上的一串数字。",
-    adviceTitle: "开仓前确认",
-    adviceMain: "亏完会心疼，就减仓。",
-    adviceSub: "如果这笔钱会影响吃饭、房租、还款、家人或睡眠，它就不是交易资金。",
-    redlineMain: "把金额砍到你不需要隐瞒的程度。",
-    redlineSub: "一笔不敢告诉现实生活的仓位，通常已经超过了你的承受能力。",
+  {
+    id: "t3",
+    name: "Delta 波段",
+    tag: "主流币波段",
+    exchange: "Bybit",
+    roi: 93.7,
+    drawdown: 18.5,
+    win: 56,
+    followers: 2103,
+    risk: "高",
+    curve: [35, 46, 39, 55, 49, 72, 66, 88, 71, 96, 84, 100],
   },
-  recover: {
-    title: "我想回本",
-    label: "已经亏损",
-    kicker: "回本冲动审判",
-    heading: "回本不是计划，是亏损在操控你。",
-    moneyLabel: "已亏损折合人民币",
-    action: "审判回本冲动",
-    heroHint: "先离开行情页面",
-    verb: "已亏损",
-    quote: "不要用更多现实生活，去修复一个数字伤口。",
-    adviceTitle: "强制止损",
-    adviceMain: "至少 24 小时不交易。",
-    adviceSub: "你现在想赢回来的，其实是尊严、懊悔和不甘，不是一个成熟的交易计划。",
-    redlineMain: "卸载或退出登录一天。",
-    redlineSub: "如果你做不到，问题已经不只是亏钱，而是交易软件正在支配你的行动。",
+  {
+    id: "t4",
+    name: "量化网格",
+    tag: "震荡策略",
+    exchange: "Bitget",
+    roi: 29.5,
+    drawdown: 4.8,
+    win: 71,
+    followers: 542,
+    risk: "低",
+    curve: [18, 20, 22, 25, 27, 26, 29, 32, 34, 35, 37, 39],
   },
-  allin: {
-    title: "我想梭哈",
-    label: "准备梭哈",
-    kicker: "梭哈现实审判",
-    heading: "梭哈听起来像翻身，现实里更像自毁退路。",
-    moneyLabel: "梭哈金额折合人民币",
-    action: "看清毁灭半径",
-    heroHint: "这是失控信号",
-    verb: "准备梭哈",
-    quote: "真正能翻身的东西，不会要求你把全部退路交出去。",
-    adviceTitle: "强制冷静",
-    adviceMain: "今天不要交易。",
-    adviceSub: "关掉交易软件，离开屏幕，等明天还能用同样理由说服自己再说。",
-    redlineMain: "现在就卸载交易软件。",
-    redlineSub: "不是永远不能回来，是今天的你已经不适合碰它。",
+  {
+    id: "t5",
+    name: "猎手合约",
+    tag: "突破追单",
+    exchange: "Gate",
+    roi: 122.8,
+    drawdown: 27.4,
+    win: 51,
+    followers: 3188,
+    risk: "极高",
+    curve: [25, 58, 33, 74, 47, 82, 61, 110, 77, 119, 90, 128],
   },
+  {
+    id: "t6",
+    name: "ETH 专注",
+    tag: "ETH 永续",
+    exchange: "Binance",
+    roi: 53.9,
+    drawdown: 7.6,
+    win: 66,
+    followers: 932,
+    risk: "中",
+    curve: [24, 29, 35, 33, 44, 47, 52, 50, 57, 63, 66, 70],
+  },
+];
+
+const positions = [
+  { symbol: "BTCUSDT", side: "多", exchange: "Binance", margin: 1200, pnl: 86.4, leverage: "5x" },
+  { symbol: "ETHUSDT", side: "空", exchange: "OKX", margin: 800, pnl: -23.8, leverage: "3x" },
+  { symbol: "SOLUSDT", side: "多", exchange: "Bybit", margin: 600, pnl: 41.2, leverage: "4x" },
+];
+
+const defaultTasks = [
+  {
+    id: 1,
+    name: "Alpha BTC 模拟跟单",
+    trader: "Alpha 短线",
+    exchange: "Binance",
+    capital: 5000,
+    pnl: 126.4,
+    risk: "单日 3%",
+    status: "运行中",
+  },
+  {
+    id: 2,
+    name: "稳健趋势低频",
+    trader: "稳健趋势",
+    exchange: "OKX",
+    capital: 8000,
+    pnl: -38.7,
+    risk: "单日 2%",
+    status: "暂停",
+  },
+];
+
+let tasks = JSON.parse(localStorage.getItem("copyDemoTasks") || "null") || defaultTasks;
+let activeFilter = "all";
+
+const views = [...document.querySelectorAll(".view")];
+const navItems = [...document.querySelectorAll(".nav-item")];
+const pageTitle = document.querySelector("#pageTitle");
+const taskModal = document.querySelector("#taskModal");
+
+const titles = {
+  dashboard: "模拟资金跟单控制台",
+  market: "交易员市场",
+  tasks: "我的跟单任务",
+  api: "交易所 API 管理",
+  orders: "模拟持仓订单",
+  risk: "风控中心",
 };
 
-const amountInput = document.querySelector("#amount");
-const rateInput = document.querySelector("#rate");
-const salaryInput = document.querySelector("#salary");
-const rentInput = document.querySelector("#rent");
-const form = document.querySelector("#calculatorForm");
-const sceneButtons = [...document.querySelectorAll(".scene-card")];
-const quickButtons = [...document.querySelectorAll(".quick-row button")];
-let currentScene = "loss";
-
-const formatter = new Intl.NumberFormat("zh-CN", {
-  maximumFractionDigits: 0,
-});
-
-function numberValue(input, fallback = 0) {
-  const value = Number(input.value);
-  return Number.isFinite(value) && value >= 0 ? value : fallback;
+function money(value) {
+  return new Intl.NumberFormat("zh-CN", { maximumFractionDigits: 0 }).format(value);
 }
 
-function formatMoney(value) {
-  return `${formatter.format(Math.round(value))} 元`;
+function percent(value) {
+  const sign = value > 0 ? "+" : "";
+  return `${sign}${value.toFixed(2)}%`;
 }
 
-function formatCount(value, unit) {
-  if (value < 10 && value !== Math.round(value)) {
-    return `${value.toFixed(1)} ${unit}`;
+function saveTasks() {
+  localStorage.setItem("copyDemoTasks", JSON.stringify(tasks));
+}
+
+function showView(id) {
+  views.forEach((view) => view.classList.toggle("active", view.id === id));
+  navItems.forEach((item) => item.classList.toggle("active", item.dataset.view === id));
+  pageTitle.textContent = titles[id];
+}
+
+function renderStats() {
+  const pnl = tasks.reduce((sum, task) => sum + task.pnl, 0);
+  const equity = 100000 + pnl;
+  const dailyPct = (pnl / 100000) * 100;
+  const running = tasks.filter((task) => task.status === "运行中").length;
+  const risk = pnl < -1000 ? "预警" : "正常";
+
+  document.querySelector("#equityValue").textContent = money(equity);
+  document.querySelector("#sideEquity").textContent = `${money(equity)} USDT`;
+  document.querySelector("#todayPnl").textContent = percent(dailyPct);
+  document.querySelector("#todayPnl").className = pnl >= 0 ? "positive" : "negative";
+  document.querySelector("#todayPnlMoney").textContent = `${pnl >= 0 ? "+" : ""}${pnl.toFixed(1)} USDT`;
+  document.querySelector("#runningTasks").textContent = running;
+  document.querySelector("#riskState").textContent = risk;
+}
+
+function renderChart() {
+  const chart = document.querySelector("#equityChart");
+  const points = [72, 76, 73, 81, 85, 83, 91];
+  chart.innerHTML = points
+    .map(
+      (value, index) => `
+        <div class="bar-wrap">
+          <div class="bar" style="height:${value}%"></div>
+          <span class="bar-label">D${index + 1}</span>
+        </div>
+      `,
+    )
+    .join("");
+}
+
+function renderExchanges() {
+  const html = exchanges
+    .map(
+      (item) => `
+        <article class="exchange-card">
+          <div>
+            <strong>${item.name}</strong>
+            <span>${item.api} · 延迟 ${item.latency}</span>
+          </div>
+          <span class="status-pill good">${item.status}</span>
+        </article>
+      `,
+    )
+    .join("");
+  document.querySelector("#exchangeGrid").innerHTML = html;
+  document.querySelector("#apiList").innerHTML = exchanges
+    .map(
+      (item) => `
+        <article class="api-card">
+          <div>
+            <strong>${item.name} 模拟 API</strong>
+            <span>${item.api} · 只读/交易权限演示</span>
+          </div>
+          <span class="status-pill ${item.api.includes("已") ? "good" : "warn"}">${item.api.includes("已") ? "正常" : "未连接"}</span>
+        </article>
+      `,
+    )
+    .join("");
+}
+
+function traderCard(trader, featured = false) {
+  return `
+    <article class="trader-card">
+      <div class="trader-top">
+        <div class="avatar-line">
+          <span class="avatar">${trader.name.slice(0, 1)}</span>
+          <div>
+            <strong>${trader.name}</strong>
+            <span>${trader.tag} · ${trader.exchange}</span>
+          </div>
+        </div>
+        <span class="status-pill ${trader.risk === "低" ? "good" : trader.risk === "极高" ? "bad" : "warn"}">风险 ${trader.risk}</span>
+      </div>
+      <div class="sparkline">${trader.curve.map((height) => `<i style="height:${height}%"></i>`).join("")}</div>
+      <div class="trader-metrics">
+        <article><span>收益率</span><strong class="positive">+${trader.roi}%</strong></article>
+        <article><span>最大回撤</span><strong>${trader.drawdown}%</strong></article>
+        <article><span>胜率</span><strong>${trader.win}%</strong></article>
+      </div>
+      <button class="primary-btn ${featured ? "small" : ""}" type="button" data-follow="${trader.id}">模拟跟单</button>
+    </article>
+  `;
+}
+
+function renderTraders() {
+  const keyword = document.querySelector("#traderSearch")?.value.trim().toLowerCase() || "";
+  const filtered = traders.filter((trader) => {
+    const matchesExchange = activeFilter === "all" || trader.exchange === activeFilter;
+    const matchesKeyword = !keyword || `${trader.name}${trader.tag}`.toLowerCase().includes(keyword);
+    return matchesExchange && matchesKeyword;
+  });
+
+  document.querySelector("#featuredTraders").innerHTML = traders.slice(0, 3).map((trader) => traderCard(trader, true)).join("");
+  document.querySelector("#traderGrid").innerHTML = filtered.map((trader) => traderCard(trader)).join("");
+}
+
+function renderTaskTable() {
+  const body = document.querySelector("#taskTable");
+  if (!tasks.length) {
+    body.innerHTML = `<tr><td colspan="8">暂无跟单任务，先去交易员市场创建一个模拟任务。</td></tr>`;
+    return;
   }
-  return `${formatter.format(Math.round(value))} ${unit}`;
+
+  body.innerHTML = tasks
+    .map(
+      (task) => `
+        <tr>
+          <td><strong>${task.name}</strong></td>
+          <td>${task.trader}</td>
+          <td>${task.exchange}</td>
+          <td>${money(task.capital)} USDT</td>
+          <td class="${task.pnl >= 0 ? "positive" : "negative"}">${task.pnl >= 0 ? "+" : ""}${task.pnl.toFixed(1)} USDT</td>
+          <td>${task.risk}</td>
+          <td><span class="status-pill ${task.status === "运行中" ? "good" : "warn"}">${task.status}</span></td>
+          <td><button class="action-link" type="button" data-toggle-task="${task.id}">${task.status === "运行中" ? "暂停" : "启动"}</button></td>
+        </tr>
+      `,
+    )
+    .join("");
 }
 
-function getRealityItems(rmb, scene) {
-  const base = [
-    rmb >= 60 ? `${formatCount(rmb / 10, "顿")} 10 元早餐被划走` : "几天早餐钱被划走",
-    rmb >= 30 ? `${formatCount(rmb / 30, "份")} 普通外卖被划走` : "一顿正经饭被划走",
-    `${formatCount(rmb / 80, "天")} 基础生活费被拿走`,
+function renderPositions() {
+  document.querySelector("#positionGrid").innerHTML = positions
+    .map(
+      (item) => `
+        <article class="position-card">
+          <div class="position-head">
+            <strong>${item.symbol}</strong>
+            <span class="status-pill ${item.side === "多" ? "good" : "warn"}">${item.side}</span>
+          </div>
+          <dl>
+            <div><dt>交易所</dt><dd>${item.exchange}</dd></div>
+            <div><dt>保证金</dt><dd>${item.margin} USDT</dd></div>
+            <div><dt>杠杆</dt><dd>${item.leverage}</dd></div>
+            <div><dt>浮动盈亏</dt><dd class="${item.pnl >= 0 ? "positive" : "negative"}">${item.pnl >= 0 ? "+" : ""}${item.pnl} USDT</dd></div>
+          </dl>
+        </article>
+      `,
+    )
+    .join("");
+}
+
+function renderRisk() {
+  const items = [
+    ["全局最大杠杆", "模拟账户限制 10x，新任务默认 5x。", "good"],
+    ["单日亏损熔断", "当日亏损超过 5% 暂停新增开仓。", "good"],
+    ["连续亏损暂停", "同一任务连续亏损 3 单自动冷却。", "warn"],
+    ["API 权限检测", "真实版本必须拒绝提现权限 API Key。", "good"],
   ];
 
-  const tiers = [
-    [200, "一次认真采购生活用品的机会"],
-    [600, "一周基础伙食，或者一双能穿很久的鞋"],
-    [1200, "一次体检，或者半个月把日子过稳的预算"],
-    [2500, "一部手机、一把好椅子，或者一次不用硬撑的生活改善"],
-    [5000, "一台笔记本电脑，或者家里真正能救急的钱"],
-    [10000, "几个月房租，或者父母很长一段时间的生活费"],
-    [30000, "一笔能改变现金流的储备金，不该被一根 K 线带走"],
-  ];
-
-  const matched = tiers.filter(([limit]) => rmb >= limit).slice(-4).map(([, text]) => text);
-  const sceneItem = {
-    loss: "本来可以留下来的安全感，现在变成了交易记录",
-    profit: "这笔钱如果不提现，很可能只是下一次亏损的燃料",
-    entry: "如果亏完你会失眠，这笔仓位已经过大",
-    recover: "你想追回的不是钱，是不甘心；不甘心最贵",
-    allin: "你押上的不是仓位，是未来很久的生活缓冲",
-  }[scene];
-
-  return [...base, ...matched, sceneItem].slice(0, 7);
+  document.querySelector("#riskList").innerHTML = items
+    .map(
+      ([title, desc, state]) => `
+        <article class="risk-card">
+          <div>
+            <strong>${title}</strong>
+            <span>${desc}</span>
+          </div>
+          <span class="status-pill ${state}">${state === "good" ? "启用" : "观察"}</span>
+        </article>
+      `,
+    )
+    .join("");
 }
 
-function getTruthItems(rmb, scene, workdays, salaryBurn, rentPercent) {
-  const common = [
-    `这相当于你工作 ${formatCount(workdays, "天")}，不是鼠标点一下就能抹掉的东西。`,
-    `这占你月收入的 ${salaryBurn.toFixed(salaryBurn >= 10 ? 0 : 1)}%，现实里没人会把这叫“小钱”。`,
-    `这等于你房租/房贷的 ${rentPercent.toFixed(rentPercent >= 10 ? 0 : 1)}%，它本来可以换来一个更稳的晚上。`,
-  ];
-
-  const sceneTruth = {
-    loss: [
-      "你现在最想做的下一单，往往不是机会，而是情绪的续费。",
-      "如果你不敢把亏损金额告诉亲近的人，说明你自己也知道它已经越界。",
-      "亏损不会因为你盯盘更久而变小，只会让你更难停手。",
-    ],
-    profit: [
-      "赚到钱还不愿意提现，本质上是把胜利继续放回风险里。",
-      "真正的盈利会进入银行卡、债务、储蓄和生活，而不是只停在交易所余额。",
-      "如果盈利让你觉得自己无敌，那它正在把你带向下一次大亏。",
-    ],
-    entry: [
-      "如果这笔钱亏完会让你编理由、撒谎或睡不着，那就不该开。",
-      "你不是在选择方向，你是在选择是否愿意把现实生活拿去换概率。",
-      "仓位越需要勇气，越说明它超过了你的真实承受力。",
-    ],
-    recover: [
-      "回本两个字最可怕的地方，是它会让你把风险越开越大。",
-      "市场不欠你钱。你越想讨回来，越容易把剩下的也交出去。",
-      "现在停手不是认输，是阻止自己继续把生活往洞里推。",
-    ],
-    allin: [
-      "梭哈不是胆量，是没有给明天的自己留选择。",
-      "如果一笔交易需要押上全部，它失败时也会拿走全部缓冲。",
-      "你不是差一次翻身机会，你是需要立刻从冲动里出来。",
-    ],
-  }[scene];
-
-  if (rmb >= 10000 && scene !== "profit") {
-    return ["这已经不是一次小亏，这是一次现实生活事故。", ...common, ...sceneTruth].slice(0, 6);
+function openTaskModal(traderId) {
+  const select = document.querySelector("#taskTrader");
+  select.innerHTML = traders.map((trader) => `<option value="${trader.id}">${trader.name}</option>`).join("");
+  if (traderId) {
+    select.value = traderId;
+    const trader = traders.find((item) => item.id === traderId);
+    document.querySelector("#taskExchange").value = trader.exchange;
   }
-
-  return [...common, ...sceneTruth].slice(0, 6);
+  taskModal.showModal();
 }
 
-function riskLevel(rmb, scene) {
-  const prefix = scene === "profit" ? "现实改善等级" : "价值观崩塌等级";
-  if (scene === "allin") return `${prefix}：红色警报`;
-  if (scene === "recover") return `${prefix}：情绪接管`;
-  if (rmb >= 30000) return `${prefix}：生活事故`;
-  if (rmb >= 10000) return `${prefix}：严重失真`;
-  if (rmb >= 3000) return `${prefix}：明显失真`;
-  if (rmb >= 800) return `${prefix}：开始麻木`;
-  return `${prefix}：轻度偏离`;
-}
-
-function updateScene(scene) {
-  currentScene = scene;
-  const config = scenes[scene];
-  document.body.className = `scene-${scene}`;
-  sceneButtons.forEach((button) => {
-    button.classList.toggle("active", button.dataset.scene === scene);
-  });
-  document.querySelector("#sceneTitle").textContent = config.title;
-  document.querySelector("#amountLabel").textContent = config.label;
-  document.querySelector("#resultKicker").textContent = config.kicker;
-  document.querySelector("#resultTitle").textContent = config.heading;
-  document.querySelector("#moneyLabel").textContent = config.moneyLabel;
-  document.querySelector("#mainAction").textContent = config.action;
-  document.querySelector("#adviceTitle").textContent = config.adviceTitle;
-  document.querySelector("#adviceMain").textContent = config.adviceMain;
-  document.querySelector("#adviceSub").textContent = config.adviceSub;
-  document.querySelector("#redlineMain").textContent = config.redlineMain;
-  document.querySelector("#redlineSub").textContent = config.redlineSub;
-  calculate();
-}
-
-function fillList(selector, items) {
-  const list = document.querySelector(selector);
-  list.innerHTML = "";
-  items.forEach((item) => {
-    const li = document.createElement("li");
-    li.textContent = item;
-    list.appendChild(li);
-  });
-}
-
-function calculate() {
-  const config = scenes[currentScene];
-  const amount = numberValue(amountInput, 0);
-  const rate = numberValue(rateInput, 6.8) || 6.8;
-  const salary = numberValue(salaryInput, 6000) || 6000;
-  const rent = numberValue(rentInput, 1800) || 1800;
-  const rmb = amount * rate;
-  const workdays = rmb / (salary / 22);
-  const breakfast = rmb / 10;
-  const meals = rmb / 30;
-  const rentPercent = (rmb / rent) * 100;
-  const salaryBurn = (rmb / salary) * 100;
-  const survivalDays = rmb / 80;
-  const familyDays = rmb / 50;
-
-  document.querySelector("#heroAmount").textContent = `${formatter.format(amount)}U`;
-  document.querySelector("#heroHint").textContent = config.heroHint;
-  document.querySelector("#rmbValue").textContent = formatMoney(rmb);
-  document.querySelector("#riskText").textContent = riskLevel(rmb, currentScene);
-  document.querySelector("#breakfastValue").textContent = formatCount(breakfast, "顿");
-  document.querySelector("#mealValue").textContent = formatCount(meals, "份");
-  document.querySelector("#workValue").textContent = formatCount(workdays, "天");
-  document.querySelector("#rentValue").textContent = `${rentPercent.toFixed(rentPercent >= 10 ? 0 : 1)}%`;
-  document.querySelector("#salaryBurn").textContent = `${salaryBurn.toFixed(salaryBurn >= 10 ? 0 : 1)}%`;
-  document.querySelector("#survivalDays").textContent = formatCount(survivalDays, "天");
-  document.querySelector("#familyDays").textContent = formatCount(familyDays, "天");
-
-  const intro = {
-    loss: `这笔 ${formatter.format(amount)}U 折合 ${formatMoney(rmb)}。它不是行情波动，是你现实生活里被扣掉的一段时间、一批选择和一层安全感。`,
-    profit: `这笔 ${formatter.format(amount)}U 折合 ${formatMoney(rmb)}。现在最重要的不是再赚一笔，而是让这笔钱真的离开风险桌面。`,
-    entry: `你准备投入 ${formatter.format(amount)}U，折合 ${formatMoney(rmb)}。开仓前先问清楚：亏完以后，你是不是还敢面对房租、账单和明天早上。`,
-    recover: `你已经亏损 ${formatter.format(amount)}U，折合 ${formatMoney(rmb)}。你现在不是在找机会，而是在被亏损牵着走。`,
-    allin: `你准备押上 ${formatter.format(amount)}U，折合 ${formatMoney(rmb)}。这不是豪气，这是把现实退路交给一根 K 线。`,
-  }[currentScene];
-  document.querySelector("#resultMessage").textContent = intro;
-
-  fillList("#realityItems", getRealityItems(rmb, currentScene));
-  fillList("#truthItems", getTruthItems(rmb, currentScene, workdays, salaryBurn, rentPercent));
-
-  document.querySelector("#shareAmount").textContent = `${config.verb} ${formatter.format(amount)}U = ${formatMoney(rmb)}`;
-  document.querySelector("#shareLine").textContent =
-    `约等于 ${formatCount(breakfast, "顿")}早餐、${formatCount(workdays, "个")}工作日、${salaryBurn.toFixed(salaryBurn >= 10 ? 0 : 1)}% 月收入。`;
-  document.querySelector("#shareQuote").textContent = config.quote;
-}
-
-function showToast(text) {
-  const toast = document.createElement("div");
-  toast.className = "toast";
-  toast.textContent = text;
-  document.body.appendChild(toast);
-  setTimeout(() => toast.remove(), 1800);
-}
-
-async function copyShareText() {
-  const text = [
-    "我的币圈现实审判",
-    document.querySelector("#shareAmount").textContent,
-    document.querySelector("#shareLine").textContent,
-    document.querySelector("#shareQuote").textContent,
-    document.querySelector("#adviceMain").textContent,
-    document.querySelector("#redlineMain").textContent,
-  ].join("\n");
-
-  try {
-    await navigator.clipboard.writeText(text);
-    showToast("清醒文案已复制");
-  } catch {
-    showToast("复制失败，请手动选择文案");
-  }
-}
-
-function downloadShareImage() {
-  const width = 1080;
-  const height = 1350;
-  const canvas = document.createElement("canvas");
-  canvas.width = width;
-  canvas.height = height;
-  const ctx = canvas.getContext("2d");
-  const config = scenes[currentScene];
-  const amount = numberValue(amountInput, 0);
-  const rate = numberValue(rateInput, 6.8) || 6.8;
-  const salary = numberValue(salaryInput, 6000) || 6000;
-  const rmb = amount * rate;
-  const breakfast = rmb / 10;
-  const workdays = rmb / (salary / 22);
-  const salaryBurn = (rmb / salary) * 100;
-
-  ctx.fillStyle = "#171717";
-  ctx.fillRect(0, 0, width, height);
-  ctx.fillStyle = currentScene === "profit" ? "#207b57" : currentScene === "entry" ? "#245b82" : "#c13f32";
-  ctx.fillRect(0, 0, width, 30);
-
-  ctx.fillStyle = "#e7ede3";
-  ctx.font = "700 34px Microsoft YaHei, Arial";
-  ctx.fillText("我的币圈现实审判", 80, 130);
-
-  ctx.fillStyle = "#ffffff";
-  ctx.font = "900 78px Microsoft YaHei, Arial";
-  ctx.fillText(`${config.verb} ${formatter.format(amount)}U`, 80, 285);
-  ctx.fillText(`= ${formatMoney(rmb)}`, 80, 390);
-
-  ctx.fillStyle = "#e7ede3";
-  ctx.font = "700 42px Microsoft YaHei, Arial";
-  ctx.fillText(`约等于 ${formatCount(breakfast, "顿")}早餐`, 80, 560);
-  ctx.fillText(`约等于 ${formatCount(workdays, "个")}工作日`, 80, 635);
-  ctx.fillText(`约占月收入 ${salaryBurn.toFixed(salaryBurn >= 10 ? 0 : 1)}%`, 80, 710);
-
-  ctx.fillStyle = "#ffffff";
-  ctx.font = "800 42px Microsoft YaHei, Arial";
-  wrapCanvasText(ctx, config.quote, 80, 900, 900, 60);
-
-  ctx.fillStyle = "#8e9a8f";
-  ctx.font = "700 28px Microsoft YaHei, Arial";
-  ctx.fillText("币圈价值观回归器", 80, 1240);
-
-  const link = document.createElement("a");
-  link.download = "crypto-reality-judgement.png";
-  link.href = canvas.toDataURL("image/png");
-  link.click();
-}
-
-function wrapCanvasText(ctx, text, x, y, maxWidth, lineHeight) {
-  let line = "";
-  for (const char of text) {
-    const next = line + char;
-    if (ctx.measureText(next).width > maxWidth && line) {
-      ctx.fillText(line, x, y);
-      line = char;
-      y += lineHeight;
-    } else {
-      line = next;
-    }
-  }
-  ctx.fillText(line, x, y);
-}
-
-sceneButtons.forEach((button) => {
-  button.addEventListener("click", () => updateScene(button.dataset.scene));
-});
-
-quickButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    amountInput.value = button.dataset.amount;
-    calculate();
-  });
-});
-
-[amountInput, rateInput, salaryInput, rentInput].forEach((input) => {
-  input.addEventListener("input", calculate);
-});
-
-form.addEventListener("submit", (event) => {
+function createTask(event) {
   event.preventDefault();
-  calculate();
-  document.querySelector(".result-panel").scrollIntoView({ behavior: "smooth", block: "start" });
+  const trader = traders.find((item) => item.id === document.querySelector("#taskTrader").value);
+  const capital = Number(document.querySelector("#taskCapital").value) || 5000;
+  const leverage = Number(document.querySelector("#taskLeverage").value) || 5;
+  const stop = document.querySelector("#taskStop").value;
+  const next = {
+    id: Date.now(),
+    name: `${trader.name} ${leverage}x 模拟`,
+    trader: trader.name,
+    exchange: document.querySelector("#taskExchange").value,
+    capital,
+    pnl: Number((capital * (trader.roi / 100) * 0.012 - trader.drawdown).toFixed(1)),
+    risk: `单日 ${stop}`,
+    status: "运行中",
+  };
+  tasks = [next, ...tasks];
+  saveTasks();
+  taskModal.close();
+  renderAll();
+  showView("tasks");
+}
+
+function resetDemo() {
+  tasks = defaultTasks;
+  saveTasks();
+  renderAll();
+  showView("dashboard");
+}
+
+function renderAll() {
+  renderStats();
+  renderChart();
+  renderExchanges();
+  renderTraders();
+  renderTaskTable();
+  renderPositions();
+  renderRisk();
+}
+
+document.addEventListener("click", (event) => {
+  const nav = event.target.closest("[data-view]");
+  const jump = event.target.closest("[data-jump]");
+  const follow = event.target.closest("[data-follow]");
+  const toggle = event.target.closest("[data-toggle-task]");
+
+  if (nav) showView(nav.dataset.view);
+  if (jump) showView(jump.dataset.jump);
+  if (follow) openTaskModal(follow.dataset.follow);
+  if (toggle) {
+    const id = Number(toggle.dataset.toggleTask);
+    tasks = tasks.map((task) =>
+      task.id === id ? { ...task, status: task.status === "运行中" ? "暂停" : "运行中" } : task,
+    );
+    saveTasks();
+    renderAll();
+  }
 });
 
-document.querySelector("#resetBtn").addEventListener("click", () => {
-  amountInput.value = 100;
-  rateInput.value = 6.8;
-  salaryInput.value = 6000;
-  rentInput.value = 1800;
-  updateScene("loss");
+document.querySelector("#exchangeFilter").addEventListener("click", (event) => {
+  const button = event.target.closest("button");
+  if (!button) return;
+  activeFilter = button.dataset.filter;
+  document.querySelectorAll("#exchangeFilter button").forEach((item) => item.classList.toggle("active", item === button));
+  renderTraders();
 });
 
-document.querySelector("#copyBtn").addEventListener("click", copyShareText);
-document.querySelector("#downloadBtn").addEventListener("click", downloadShareImage);
+document.querySelector("#traderSearch").addEventListener("input", renderTraders);
+document.querySelector("#openCreateTask").addEventListener("click", () => openTaskModal());
+document.querySelector("#openCreateTask2").addEventListener("click", () => openTaskModal());
+document.querySelector("#closeModal").addEventListener("click", () => taskModal.close());
+document.querySelector("#cancelModal").addEventListener("click", () => taskModal.close());
+document.querySelector("#taskForm").addEventListener("submit", createTask);
+document.querySelector("#resetDemo").addEventListener("click", resetDemo);
 
-updateScene("loss");
+renderAll();
